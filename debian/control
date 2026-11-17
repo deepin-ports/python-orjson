@@ -1,0 +1,77 @@
+Source: python-orjson
+Section: python
+Maintainer: Debian Python Team <team+python@tracker.debian.org>
+Uploaders:
+ Agathe Porte <gagath@debian.org>,
+Build-Depends:
+ cargo,
+ debhelper-compat (= 14),
+ dh-sequence-python3,
+ dh-sequence-single-binary,
+ librust-associative-cache-dev,
+ librust-bytecount-dev,
+ librust-bytes-dev,
+ librust-cc-dev,
+ librust-encoding-rs-dev,
+ librust-half-dev,
+ librust-itoap-dev,
+ librust-jiff-dev,
+ librust-once-cell-dev,
+ librust-page-size-dev,
+ librust-pyo3-ffi-dev (>= 0.25),
+ librust-pyo3-build-config-dev,
+ librust-ryu-dev,
+ librust-serde-dev,
+ librust-serde-json-dev,
+ librust-simdutf8-dev,
+ librust-smallvec-dev,
+ librust-uuid-dev,
+ librust-xxhash-rust-dev,
+ librust-zmij-dev,
+ pybuild-plugin-pyproject,
+ python3-all,
+ python3-dateutil <!nocheck>,
+ python3-fake-factory <!nocheck>,
+ python3-maturin,
+ python3-numpy <!nocheck>,
+ python3-pandas <!nocheck>,
+ python3-pendulum <!nocheck>,
+ python3-psutil <!nocheck>,
+ python3-pytest <!nocheck>,
+ python3-pytz <!nocheck>,
+Standards-Version: 4.7.4
+Homepage: https://github.com/ijl/orjson/
+Vcs-Browser: https://salsa.debian.org/python-team/packages/python-orjson
+Vcs-Git: https://salsa.debian.org/python-team/packages/python-orjson.git
+
+Package: python3-orjson
+Architecture: any
+Description: JSON parsing Python library
+ Fast, correct Python JSON library supporting dataclasses, datetimes, and numpy
+ orjson is a fast, correct JSON library for Python. It benchmarks as the
+ fastest Python library for JSON and is more correct than the standard json
+ library or other third-party libraries. It serializes dataclass, datetime,
+ numpy, and UUID instances natively.
+ .
+ Its features and drawbacks compared to other Python JSON libraries:
+ .
+  * serializes `dataclass` instances 40-50x as fast as other libraries
+  * serializes `datetime`, `date`, and `time` instances to RFC 3339 format,
+    e.g., "1970-01-01T00:00:00+00:00"
+  * serializes `numpy.ndarray` instances 4-12x as fast with 0.3x the memory
+    usage of other libraries
+  * pretty prints 10x to 20x as fast as the standard library
+  * serializes to `bytes` rather than `str`, i.e., is not a drop-in replacement
+  * serializes `str` without escaping unicode to ASCII, e.g., "好" rather than
+  "\\\u597d"
+  * serializes `float` 10x as fast and deserializes twice as fast as other
+    libraries
+  * serializes subclasses of `str`, `int`, `list`, and `dict` natively,
+  requiring `default` to specify how to serialize others
+  * serializes arbitrary types using a `default` hook
+  * has strict UTF-8 conformance, more correct than the standard library
+  * has strict JSON conformance in not supporting Nan/Infinity/-Infinity
+  * has an option for strict JSON conformance on 53-bit integers with default
+    support for 64-bit
+  * does not provide `load()` or `dump()` functions for reading from/writing to
+    file-like objects

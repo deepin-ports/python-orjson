@@ -1,0 +1,125 @@
+python-orjson (3.13.0-1) unstable; urgency=medium
+
+  * Team upload.
+  * New upstream release.
+  * Build against pyo3 0.28 available in Debian.
+  * Do not enable zmij's no-panic feature (unavailable in Debian).
+  * Look up Python 3.15's frozendict type via builtins.
+  * Remove defaults from debian/control.
+  * Update Standards-Version.
+  * Update to debhelper compatibility level 14.
+  * Add dh-sequence-single-binary.
+  * Add lintian overrides for the Rust-built extension modules.
+
+ -- Edward Betts <edward@4angle.com>  Wed, 28 Oct 2026 09:08:06 +0000
+
+python-orjson (3.12.0-1) unstable; urgency=medium
+
+  * Team upload
+  * New upstream version 3.12.0
+  * Patch: allow any associative-cache version
+
+ -- Bastian Germann <bage@debian.org>  Mon, 31 Aug 2026 11:56:52 +0200
+
+python-orjson (3.11.7-3) unstable; urgency=medium
+
+  * add missing build-dep for rust cc crate (Closes: #1141011)
+  * more cleanup
+  * be more verbose for blhc
+
+ -- Joseph Nahmias <jello@debian.org>  Mon, 29 Jun 2026 19:33:50 -0400
+
+python-orjson (3.11.7-2) unstable; urgency=medium
+
+  * Team upload.
+  * Drop d/p/pyo3-relax: we now have 0.28 packaged in Debian. (Closes: #1131588)
+  * remove target/ dir on clean
+
+ -- Joseph Nahmias <jello@debian.org>  Sun, 29 Mar 2026 22:52:40 -0400
+
+python-orjson (3.11.7-1) unstable; urgency=medium
+
+  * Team upload.
+  * New upstream version
+  * d/copyright: new upstream license: MPL-2 (with some files also as Expat).
+  * Standards-Version: 4.7.3 (routine-update)
+  * Refreshed remove-unwinding-feature.patch
+  * Added patch to allow for building with older version of the pyo3
+    crates.
+  * Added patch to remove the no-panic feature as it is unsupported by
+    the Debian package for the "zmij" crate.
+  * d/control: add explicit deps on librust-zmij-dev & librust-pyo3-
+    build-config-dev.
+
+ -- Michael R. Crusoe <crusoe@debian.org>  Mon, 09 Mar 2026 11:15:15 +0100
+
+python-orjson (3.11.5-1) unstable; urgency=medium
+
+  * Team upload.
+  * New upstream version
+    - Python 3.14 support
+    - rust-pyo3-ffi 0.27 support (Closes: #1121949)
+    - drop relax-jiff.patch and relax-pyo.patch no longer needed
+    - refresh remove-unwinding-feature.patch
+
+ -- Stuart Prescott <stuart@debian.org>  Tue, 09 Dec 2025 09:56:45 +1100
+
+python-orjson (3.11.3-2) unstable; urgency=medium
+
+  * Team upload.
+  * Accept pyo3 0.26.
+
+ -- Colin Watson <cjwatson@debian.org>  Sun, 12 Oct 2025 21:46:47 +0100
+
+python-orjson (3.11.3-1) unstable; urgency=medium
+
+  * Team upload.
+  * d/watch: Upgrade to v5.
+  * New upstream release:
+    - Update pyo3-ffi dependency to 0.25 (closes: #1114315).
+  * Add several build/autopkgtest dependencies to improve test coverage.
+  * Standards-Version: 4.7.2.
+
+ -- Colin Watson <cjwatson@debian.org>  Thu, 11 Sep 2025 12:32:08 +0100
+
+python-orjson (3.10.7-2) unstable; urgency=medium
+
+  * Team upload.
+  * Fix FTBFS with multiple supported Python interpreters, with thanks to
+    Samuel Thibault for diagnosing the issue (Closes: #1087750).
+  * Simplify some steps in d/rules.
+  * Add additional outputs to debian/clean.
+  * Update Standards-Version to 4.7.0 (no changes required).
+
+ -- Stuart Prescott <stuart@debian.org>  Tue, 19 Nov 2024 19:28:07 +1100
+
+python-orjson (3.10.7-1) unstable; urgency=medium
+
+  [ Alexandre Detiste ]
+  * fix syntax error in Maintainer field
+
+  [ Agathe Porte ]
+  * New upstream version 3.10.7 (Closes: #1078403, #1080184)
+  * d/copyright: Add entry for yyjson
+  * Relax chrono version dependency
+  * Remove unwinding feature
+
+ -- Agathe Porte <gagath@debian.org>  Mon, 16 Sep 2024 14:37:24 +0200
+
+python-orjson (3.9.15-1) unstable; urgency=medium
+
+  * New upstream version 3.9.15 (Closes: #1077209) CVE-2024-27454
+
+ -- Agathe Porte <gagath@debian.org>  Sat, 27 Jul 2024 10:51:53 +0900
+
+python-orjson (3.9.14-3) unstable; urgency=medium
+
+  * Source-only upload.
+
+ -- Agathe Porte <gagath@debian.org>  Fri, 26 Jul 2024 16:20:20 +0900
+
+python-orjson (3.9.14-2) unstable; urgency=medium
+
+  * Initial release. (Closes: #1002996)
+
+ -- Agathe Porte <gagath@debian.org>  Fri, 26 Jul 2024 15:17:10 +0900

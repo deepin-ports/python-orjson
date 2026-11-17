@@ -1,0 +1,33 @@
+From: Agathe Porte <gagath@debian.org>
+Date: Mon, 16 Sep 2024 13:46:45 +0200
+Subject: Remove unwinding feature
+
+The unwinding crate is not yet packaged in Debian.
+
+Forwarded: not-needed
+---
+ Cargo.toml | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/Cargo.toml b/Cargo.toml
+index 7707fea..dc54411 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -30,9 +30,6 @@ crate-type = ["cdylib"]
+ [features]
+ default = []
+ 
+-# Avoid bundling libgcc on musl.
+-unwind = ["unwinding"]
+-
+ avx512 = []
+ generic_simd = []
+ inline_int = []
+@@ -49,7 +46,6 @@ jiff-core = { version = "0.1", default-features = false }
+ once_cell = { version = "1", default-features = false, features = ["alloc", "race"] }
+ pyo3-ffi = { version = "0.29", default-features = false }
+ simdutf8 = { version = "0.1", default-features = false, features = ["std", "public_imp", "aarch64_neon"] }
+-unwinding = { version = "=0.2.10", default-features = false, features = ["unwinder"], optional = true }
+ xxhash-rust = { version = "^0.8", default-features = false, features = ["xxh3"] }
+ zmij = { version = "1", default-features = false }
+ 

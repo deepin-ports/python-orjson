@@ -1,0 +1,8 @@
+# SPDX-License-Identifier: MPL-2.0
+# Copyright ijl (2023)
+
+[source.crates-io]
+replace-with = "vendored-sources"
+
+[source.vendored-sources]
+directory = "include/cargo"

@@ -1,0 +1,17 @@
+#!/usr/bin/make -f
+
+#export DH_VERBOSE = 1
+
+export PYBUILD_NAME=orjson
+export CARGO_NET_OFFLINE=true
+export CARGO_HOME=$(shell pwd)/debian/cargo_home
+export CARGO_TERM_VERBOSE=true
+
+%:
+	dh $@ --buildsystem=pybuild
+
+execute_before_dh_auto_clean:
+	if test -f Cargo.lock.saved; then mv Cargo.lock.saved Cargo.lock; fi
+
+execute_before_dh_auto_build:
+	mv Cargo.lock Cargo.lock.saved

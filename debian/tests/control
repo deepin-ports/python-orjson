@@ -1,0 +1,12 @@
+Tests: pytest.sh
+Depends:
+ @,
+ python3-all,
+ python3-dateutil,
+ python3-fake-factory,
+ python3-numpy,
+ python3-pandas,
+ python3-pendulum,
+ python3-psutil,
+ python3-pytest,
+ python3-pytz,
