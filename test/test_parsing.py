@@ -1,16 +1,10 @@
-# SPDX-License-Identifier: MPL-2.0
-# Copyright ijl (2018-2026)
+# SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 import pytest
 
 import orjson
 
-from .util import (
-    SUPPORTS_BYTEARRAY,
-    SUPPORTS_MEMORYVIEW,
-    needs_data,
-    read_fixture_bytes,
-)
+from .util import needs_data, read_fixture_bytes
 
 
 @needs_data
@@ -19,12 +13,10 @@ class TestJSONTestSuiteParsing:
         data = read_fixture_bytes(filename, "parsing")
         with pytest.raises(exc):
             orjson.loads(data)
-        if SUPPORTS_BYTEARRAY:
-            with pytest.raises(exc):
-                orjson.loads(bytearray(data))
-        if SUPPORTS_MEMORYVIEW:
-            with pytest.raises(exc):
-                orjson.loads(memoryview(data))
+        with pytest.raises(exc):
+            orjson.loads(bytearray(data))
+        with pytest.raises(exc):
+            orjson.loads(memoryview(data))
         try:
             decoded = data.decode("utf-8")
         except UnicodeDecodeError:
@@ -36,10 +28,8 @@ class TestJSONTestSuiteParsing:
     def _run_pass_json(self, filename, match=""):
         data = read_fixture_bytes(filename, "parsing")
         orjson.loads(data)
-        if SUPPORTS_BYTEARRAY:
-            orjson.loads(bytearray(data))
-        if SUPPORTS_MEMORYVIEW:
-            orjson.loads(memoryview(data))
+        orjson.loads(bytearray(data))
+        orjson.loads(memoryview(data))
         orjson.loads(data.decode("utf-8"))
 
     def test_y_array_arraysWithSpace(self):
@@ -1944,7 +1934,11 @@ class TestJSONTestSuiteParsing:
         """
         i_structure_500_nested_arrays.json
         """
-        self._run_pass_json("i_structure_500_nested_arrays.json.xz")
+        try:
+            self._run_pass_json("i_structure_500_nested_arrays.json.xz")
+        except orjson.JSONDecodeError:
+            # fails on serde, passes on yyjson
+            pass
 
     def test_i_structure_UTF_8_BOM_empty_object(self):
         """

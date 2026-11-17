@@ -1,6 +1,6 @@
-memory-profiler; python_version<"3.15" and implementation_name=="cpython"
-pandas; python_version<"3.15" and implementation_name=="cpython"
+memory-profiler; python_version<"3.14"
+pandas; python_version<"3.14"
 pytest-benchmark
 pytest-random-order
-seaborn; python_version<"3.15" and implementation_name=="cpython"
+seaborn; python_version<"3.14"
 tabulate

@@ -10,24 +10,24 @@ Forwarded: not-needed
  1 file changed, 4 deletions(-)
 
 diff --git a/Cargo.toml b/Cargo.toml
-index 7707fea..dc54411 100644
+index 730e6be..e680d06 100644
 --- a/Cargo.toml
 +++ b/Cargo.toml
-@@ -30,9 +30,6 @@ crate-type = ["cdylib"]
+@@ -27,9 +27,6 @@ crate-type = ["cdylib"]
  [features]
  default = []
  
 -# Avoid bundling libgcc on musl.
 -unwind = ["unwinding"]
 -
- avx512 = []
- generic_simd = []
- inline_int = []
-@@ -49,7 +46,6 @@ jiff-core = { version = "0.1", default-features = false }
- once_cell = { version = "1", default-features = false, features = ["alloc", "race"] }
- pyo3-ffi = { version = "0.29", default-features = false }
+ # Build yyjson as a backend and panic if it fails. The default is to attempt
+ # to build and on failure fall back to another backend.
+ yyjson = []
+@@ -58,7 +55,6 @@ serde = { version = "1", default-features = false }
+ serde_json = { version = "1", default-features = false, features = ["std", "float_roundtrip"] }
  simdutf8 = { version = "0.1", default-features = false, features = ["std", "public_imp", "aarch64_neon"] }
--unwinding = { version = "=0.2.10", default-features = false, features = ["unwinder"], optional = true }
+ smallvec = { version = "^1.11", default-features = false, features = ["union", "write"] }
+-unwinding = { version = "=0.2.5", default-features = false, features = ["unwinder"], optional = true }
+ uuid = { version = "1", default-features = false }
  xxhash-rust = { version = "^0.8", default-features = false, features = ["xxh3"] }
- zmij = { version = "1", default-features = false }
  

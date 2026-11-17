@@ -1,5 +1,4 @@
-# SPDX-License-Identifier: MPL-2.0
-# Copyright ijl (2019-2022)
+# SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 import orjson
 

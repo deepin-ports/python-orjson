@@ -1,75 +1,11 @@
-python-orjson (3.13.0-1) unstable; urgency=medium
+python-orjson (3.11.1-1deepin1) unstable; urgency=medium
 
-  * Team upload.
-  * New upstream release.
-  * Build against pyo3 0.28 available in Debian.
-  * Do not enable zmij's no-panic feature (unavailable in Debian).
-  * Look up Python 3.15's frozendict type via builtins.
-  * Remove defaults from debian/control.
-  * Update Standards-Version.
-  * Update to debhelper compatibility level 14.
-  * Add dh-sequence-single-binary.
-  * Add lintian overrides for the Rust-built extension modules.
+  * Downgrade to upstream 3.11.1 for the Python 3.14 bootstrap with Rust 1.82.
+  * Base packaging on Debian 3.11.3-1 and refresh the unwinding patch for 0.2.5.
+  * Constrain PyO3 FFI and build-config to the compatible 0.25 series.
+  * Declare the minimum Rust version and direct Rust build dependencies.
 
- -- Edward Betts <edward@4angle.com>  Wed, 28 Oct 2026 09:08:06 +0000
-
-python-orjson (3.12.0-1) unstable; urgency=medium
-
-  * Team upload
-  * New upstream version 3.12.0
-  * Patch: allow any associative-cache version
-
- -- Bastian Germann <bage@debian.org>  Mon, 31 Aug 2026 11:56:52 +0200
-
-python-orjson (3.11.7-3) unstable; urgency=medium
-
-  * add missing build-dep for rust cc crate (Closes: #1141011)
-  * more cleanup
-  * be more verbose for blhc
-
- -- Joseph Nahmias <jello@debian.org>  Mon, 29 Jun 2026 19:33:50 -0400
-
-python-orjson (3.11.7-2) unstable; urgency=medium
-
-  * Team upload.
-  * Drop d/p/pyo3-relax: we now have 0.28 packaged in Debian. (Closes: #1131588)
-  * remove target/ dir on clean
-
- -- Joseph Nahmias <jello@debian.org>  Sun, 29 Mar 2026 22:52:40 -0400
-
-python-orjson (3.11.7-1) unstable; urgency=medium
-
-  * Team upload.
-  * New upstream version
-  * d/copyright: new upstream license: MPL-2 (with some files also as Expat).
-  * Standards-Version: 4.7.3 (routine-update)
-  * Refreshed remove-unwinding-feature.patch
-  * Added patch to allow for building with older version of the pyo3
-    crates.
-  * Added patch to remove the no-panic feature as it is unsupported by
-    the Debian package for the "zmij" crate.
-  * d/control: add explicit deps on librust-zmij-dev & librust-pyo3-
-    build-config-dev.
-
- -- Michael R. Crusoe <crusoe@debian.org>  Mon, 09 Mar 2026 11:15:15 +0100
-
-python-orjson (3.11.5-1) unstable; urgency=medium
-
-  * Team upload.
-  * New upstream version
-    - Python 3.14 support
-    - rust-pyo3-ffi 0.27 support (Closes: #1121949)
-    - drop relax-jiff.patch and relax-pyo.patch no longer needed
-    - refresh remove-unwinding-feature.patch
-
- -- Stuart Prescott <stuart@debian.org>  Tue, 09 Dec 2025 09:56:45 +1100
-
-python-orjson (3.11.3-2) unstable; urgency=medium
-
-  * Team upload.
-  * Accept pyo3 0.26.
-
- -- Colin Watson <cjwatson@debian.org>  Sun, 12 Oct 2025 21:46:47 +0100
+ -- purofle <purofle@gmail.com>  Tue, 17 Nov 2026 15:59:01 +0800
 
 python-orjson (3.11.3-1) unstable; urgency=medium
 

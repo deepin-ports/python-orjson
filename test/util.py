@@ -1,34 +1,26 @@
-# SPDX-License-Identifier: MPL-2.0
-# Copyright ijl (2018-2026)
+# SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 import lzma
 import os
-import sys
 import sysconfig
 from pathlib import Path
 from typing import Any
 
-IS_FREETHREADING = bool(sysconfig.get_config_var("Py_GIL_DISABLED"))
-
-SUPPORTS_MEMORYVIEW = not IS_FREETHREADING
-
-SUPPORTS_BYTEARRAY = not IS_FREETHREADING
-
-SUPPORTS_GETREFCOUNT = sys.implementation == "cpython"
-
-SUPPORTS_FROZENDICT = sys.version_info.minor >= 15
+IS_FREETHREADING = sysconfig.get_config_var("Py_GIL_DISABLED")
 
 numpy = None  # type: ignore
-try:
-    import numpy  # type: ignore # noqa: F401
-except ImportError:
-    pass
+if not IS_FREETHREADING:
+    try:
+        import numpy  # type: ignore # noqa: F401
+    except ImportError:
+        pass
 
 pandas = None  # type: ignore
-try:
-    import pandas  # type: ignore # noqa: F401
-except ImportError:
-    pass
+if not IS_FREETHREADING:
+    try:
+        import pandas  # type: ignore # noqa: F401
+    except ImportError:
+        pass
 
 import pytest
 

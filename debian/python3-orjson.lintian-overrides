@@ -1,2 +1,0 @@
-# Rust cdylib: rustc does not emit glibc fortified (__*_chk) calls
-hardening-no-fortify-functions

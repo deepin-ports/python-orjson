@@ -21,10 +21,10 @@ RFC 8259 ("The JavaScript Object Notation (JSON) Data Interchange Format").
 Reading from and writing to files, line-delimited JSON files, and so on is
 not provided by the library.
 
-orjson supports CPython 3.10, 3.11, 3.12, 3.13, 3.14, and 3.15.
+orjson supports CPython 3.9, 3.10, 3.11, 3.12, 3.13, and 3.14.
 
-It distributes amd64/x86_64/x64, i686/x86, aarch64/arm64/armv8, and armv7 wheels
-for Linux, amd64 and aarch64 wheels
+It distributes amd64/x86_64/x64, i686/x86, aarch64/arm64/armv8, arm7,
+ppc64le/POWER8, and s390x wheels for Linux, amd64 and aarch64 wheels
 for macOS, and amd64, i686, and aarch64 wheels for Windows.
 
 Wheels published to PyPI for amd64 run on x86-64-v1 (2003)
@@ -40,12 +40,11 @@ orjson may support PEP 703 free-threading when it is stable.
 Releases follow semantic versioning and serializing a new object type
 without an opt-in flag is considered a breaking change.
 
-orjson contains source code licensed under the Mozilla Public License 2.0,
-Apache 2.0, and MIT licenses. The repository from which PyPI artifacts are
-published is [github.com/ijl/orjson](https://github.com/ijl/orjson) and an
-alternative repository is [codeberg.org/ijl/orjson](https://codeberg.org/ijl/orjson).
-There is no open issue tracker or pull requests due to signal-to-noise ratio.
-There is a [CHANGELOG](https://github.com/ijl/orjson/blob/master/CHANGELOG.md)
+orjson is licensed under both the Apache 2.0 and MIT licenses. The
+repository and issue tracker is
+[github.com/ijl/orjson](https://github.com/ijl/orjson), and patches may be
+submitted there. There is a
+[CHANGELOG](https://github.com/ijl/orjson/blob/master/CHANGELOG.md)
 available in the repository.
 
 1. [Usage](https://github.com/ijl/orjson?tab=readme-ov-file#usage)
@@ -151,16 +150,14 @@ def dumps(
 `dumps()` serializes Python objects to JSON.
 
 It natively serializes
-`str`, `dict`, `frozendict`, `list`, `tuple`, `int`, `float`, `bool`, `None`,
+`str`, `dict`, `list`, `tuple`, `int`, `float`, `bool`, `None`,
 `dataclasses.dataclass`, `typing.TypedDict`, `datetime.datetime`,
 `datetime.date`, `datetime.time`, `uuid.UUID`, `numpy.ndarray`, and
 `orjson.Fragment` instances. It supports arbitrary types through `default`. It
 serializes subclasses of `str`, `int`, `dict`, `list`,
 `dataclasses.dataclass`, and `enum.Enum`. It does not serialize subclasses
-of `tuple` to avoid serializing `namedtuple` objects as arrays. It does not
-serialize subclasses of `float` or `frozendict` due to implementation details
-in CPython. To avoid serializing subclasses, specify the
-option `orjson.OPT_PASSTHROUGH_SUBCLASS`.
+of `tuple` to avoid serializing `namedtuple` objects as arrays. To avoid
+serializing subclasses, specify the option `orjson.OPT_PASSTHROUGH_SUBCLASS`.
 
 The output is a `bytes` object containing UTF-8.
 
@@ -176,8 +173,8 @@ It raises `JSONEncodeError` on a `str` that contains invalid UTF-8.
 It raises `JSONEncodeError` on an integer that exceeds 64 bits by default or,
 with `OPT_STRICT_INTEGER`, 53 bits.
 
-It raises `JSONEncodeError` if a `dict` or `frozendict` has a key of a type
-other than `str`, unless `OPT_NON_STR_KEYS` is specified.
+It raises `JSONEncodeError` if a `dict` has a key of a type other than `str`,
+unless `OPT_NON_STR_KEYS` is specified.
 
 It raises `JSONEncodeError` if the output of `default` recurses to handling by
 `default` more than 254 levels deep.
@@ -261,7 +258,9 @@ b"[]\n"
 
 Pretty-print output with an indent of two spaces. This is equivalent to
 `indent=2` in the standard library. Pretty printing is slower and the output
-larger. This option is compatible with all other options.
+larger. orjson is the fastest compared library at pretty printing and has
+much less of a slowdown to pretty print than the standard library does. This
+option is compatible with all other options.
 
 ```python
 >>> import orjson
@@ -328,10 +327,9 @@ b'"1970-01-01T00:00:00+00:00"'
 
 ##### OPT_NON_STR_KEYS
 
-Serialize `dict` and `frozendict` keys of type other than `str`. This allows
-`dict` and `frozendict` keys to be one of `str`, `int`, `float`,
-`bool`, `None`, `datetime.datetime`, `datetime.date`,
-`datetime.time`, `enum.Enum`, and `uuid.UUID`. For comparison,
+Serialize `dict` keys of type other than `str`. This allows `dict` keys
+to be one of `str`, `int`, `float`, `bool`, `None`, `datetime.datetime`,
+`datetime.date`, `datetime.time`, `enum.Enum`, and `uuid.UUID`. For comparison,
 the standard library serializes `str`, `int`, `float`, `bool` or `None` by
 default. orjson benchmarks as being faster at serializing non-`str` keys
 than other libraries. This option is slower for `str` keys than the default.
@@ -465,7 +463,7 @@ TypeError: Type is not JSON serializable: datetime.datetime
 b'{"created_at":"Thu, 01 Jan 1970 00:00:00 GMT"}'
 ```
 
-This does not affect datetimes in `dict` or `frozendict` keys if using `OPT_NON_STR_KEYS`.
+This does not affect datetimes in `dict` keys if using OPT_NON_STR_KEYS.
 
 ##### OPT_PASSTHROUGH_SUBCLASS
 
@@ -490,8 +488,8 @@ TypeError: Type is not JSON serializable: Secret
 b'"******"'
 ```
 
-This does not affect serializing subclasses as `dict` or `frozendict` keys
-if using `OPT_NON_STR_KEYS`.
+This does not affect serializing subclasses as `dict` keys if using
+OPT_NON_STR_KEYS.
 
 ##### OPT_SERIALIZE_DATACLASS
 
@@ -512,9 +510,9 @@ required to serialize `uuid.UUID` instances. For more, see
 
 ##### OPT_SORT_KEYS
 
-Serialize `dict` and `frozendict` keys in sorted order. The default is
-to serialize in an unspecified order. This is equivalent
-to `sort_keys=True` in the standard library.
+Serialize `dict` keys in sorted order. The default is to serialize in an
+unspecified order. This is equivalent to `sort_keys=True` in the standard
+library.
 
 This can be used to ensure the order is deterministic for hashing or tests.
 It has a substantial performance penalty and is not recommended in general.
@@ -696,7 +694,7 @@ b'"2100-09-01T21:55:02"'
 ```
 
 `datetime.datetime` supports instances with a `tzinfo` that is `None`,
-`datetime.timezone.utc`, a timezone instance from the standard library `zoneinfo`
+`datetime.timezone.utc`, a timezone instance from the python3.9+ `zoneinfo`
 module, or a timezone instance from the third-party `pendulum`, `pytz`, or
 `dateutil`/`arrow` libraries.
 
@@ -951,7 +949,8 @@ repositories. It is tested to not crash against the
 It is tested to not leak memory. It is tested to not crash
 against and not accept invalid UTF-8. There are integration tests
 exercising the library's use in web servers (gunicorn using multiprocess/forked
-workers) and when multithreaded.
+workers) and when
+multithreaded. It also uses some tests from the ultrajson library.
 
 orjson is the most correct of the compared libraries. This graph shows how each
 library handles a combined 342 JSON fixtures from the
@@ -1072,26 +1071,30 @@ functions and objects using the normal `PyImport_*` APIs.
 
 ## Packaging
 
-To package orjson requires at least [Rust](https://www.rust-lang.org/) 1.95,
-a C compiler, and the [maturin](https://github.com/PyO3/maturin) build tool.
-The recommended build command is:
+To package orjson requires at least [Rust](https://www.rust-lang.org/) 1.82
+and the [maturin](https://github.com/PyO3/maturin) build tool. The recommended
+build command is:
 
 ```sh
 maturin build --release --strip
 ```
 
-The project's own CI tests against `nightly-2026-10-01` and stable 1.95. It
+It benefits from also having a C build environment to compile a faster
+deserialization backend. See this project's `manylinux_2_28` builds for an
+example using clang and LTO.
+
+The project's own CI tests against `nightly-2025-04-15` and stable 1.82. It
 is prudent to pin the nightly version because that channel can introduce
 breaking changes. There is a significant performance benefit to using
 nightly.
 
-orjson is tested, on Linux, using native hardware for amd64 and aarch64,
-aarch64 to run an armv7 container, amd64 to run an i686 container; on macOS,
-native hardware for aarch64 and a cross-compilation for amd64; on Windows,
-native hardware for amd64 and aarch64, and amd64 for i686.
+orjson is tested on native hardware for amd64, aarch64, and i686 on Linux and
+for arm7, ppc64le, and s390x is cross-compiled and may be tested via
+emulation. It is tested for either aarch64 or amd64 on macOS and
+cross-compiles for the other, depending on version. For Windows it is
+tested on amd64 and i686.
 
-The library does not require any other host-level or Python package to be
-installed.
+There are no runtime dependencies other than libc.
 
 The source distribution on PyPI contains all dependencies' source and can be
 built without network access. The file can be downloaded from
@@ -1105,6 +1108,5 @@ with `pytest -q test`.
 
 ## License
 
-orjson was written by ijl <<ijl@mailbox.org>>, copyright 2018 - 2026, with
-some source files available under the Mozilla Public License 2.0 and some
-available under your choice of the Apache 2 license or MIT license.
+orjson was written by ijl <<ijl@mailbox.org>>, copyright 2018 - 2025, available
+to you under either the Apache 2 license or MIT license at your choice.

@@ -1,4 +1,2 @@
 remove-unwinding-feature.patch
-remove-no-panic-feature
-allow-any-associative-cache-version
-0004-Build-against-pyo3-0.28-available-in-Debian.patch
+relax-jiff.patch

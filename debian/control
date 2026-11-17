@@ -1,33 +1,38 @@
 Source: python-orjson
 Section: python
+Priority: optional
 Maintainer: Debian Python Team <team+python@tracker.debian.org>
 Uploaders:
  Agathe Porte <gagath@debian.org>,
+Rules-Requires-Root: no
 Build-Depends:
  cargo,
- debhelper-compat (= 14),
+ rustc:native (>= 1.82),
+ debhelper-compat (= 13),
  dh-sequence-python3,
- dh-sequence-single-binary,
  librust-associative-cache-dev,
  librust-bytecount-dev,
  librust-bytes-dev,
  librust-cc-dev,
  librust-encoding-rs-dev,
  librust-half-dev,
+ librust-itoa-dev,
  librust-itoap-dev,
  librust-jiff-dev,
  librust-once-cell-dev,
  librust-page-size-dev,
- librust-pyo3-ffi-dev (>= 0.25),
- librust-pyo3-build-config-dev,
+ librust-pyo3-ffi-dev (>= 0.25.1),
+ librust-pyo3-ffi-dev (<< 0.26),
+ librust-pyo3-build-config-dev (>= 0.25.1),
+ librust-pyo3-build-config-dev (<< 0.26),
  librust-ryu-dev,
  librust-serde-dev,
  librust-serde-json-dev,
  librust-simdutf8-dev,
  librust-smallvec-dev,
  librust-uuid-dev,
+ librust-version-check-dev,
  librust-xxhash-rust-dev,
- librust-zmij-dev,
  pybuild-plugin-pyproject,
  python3-all,
  python3-dateutil <!nocheck>,
@@ -39,13 +44,17 @@ Build-Depends:
  python3-psutil <!nocheck>,
  python3-pytest <!nocheck>,
  python3-pytz <!nocheck>,
-Standards-Version: 4.7.4
+Standards-Version: 4.7.2
 Homepage: https://github.com/ijl/orjson/
 Vcs-Browser: https://salsa.debian.org/python-team/packages/python-orjson
 Vcs-Git: https://salsa.debian.org/python-team/packages/python-orjson.git
 
 Package: python3-orjson
 Architecture: any
+Depends:
+ ${misc:Depends},
+ ${python3:Depends},
+ ${shlibs:Depends},
 Description: JSON parsing Python library
  Fast, correct Python JSON library supporting dataclasses, datetimes, and numpy
  orjson is a fast, correct JSON library for Python. It benchmarks as the

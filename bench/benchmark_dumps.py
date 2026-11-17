@@ -1,19 +1,19 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
-# Copyright ijl (2020-2026), Aarni Koskela (2021)
 
 from json import loads as json_loads
 
 import pytest
 
-from .data import FIXTURE_AS_OBJECTS, FIXTURE_NAMES, LIBRARIES
+from .data import fixtures, libraries
+from .util import read_fixture_obj
 
 
-@pytest.mark.parametrize("library", LIBRARIES)
-@pytest.mark.parametrize("fixture", FIXTURE_NAMES)
+@pytest.mark.parametrize("library", libraries)
+@pytest.mark.parametrize("fixture", fixtures)
 def test_dumps(benchmark, fixture, library):
-    dumper, _ = LIBRARIES[library]
+    dumper, loader = libraries[library]
     benchmark.group = f"{fixture} serialization"
     benchmark.extra_info["lib"] = library
-    data = FIXTURE_AS_OBJECTS[fixture]
+    data = read_fixture_obj(f"{fixture}.xz")
     benchmark.extra_info["correct"] = json_loads(dumper(data)) == data  # type: ignore
     benchmark(dumper, data)

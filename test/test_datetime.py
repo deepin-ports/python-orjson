@@ -1,5 +1,4 @@
-# SPDX-License-Identifier: MPL-2.0
-# Copyright ijl (2019-2026)
+# SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 import datetime
 
@@ -74,20 +73,6 @@ class TestDatetime:
             )
             == b'["0001-01-01T00:00:00+00:00"]'
         )
-
-    def test_datetime_min_invalid(self):
-        """
-        datetime.datetime min range invalid
-        """
-        with pytest.raises(ValueError):
-            datetime.datetime(-1, 1, 1, 0, 0, 0, 0)
-
-    def test_datetime_max_invalid(self):
-        """
-        datetime.datetime max range invalid
-        """
-        with pytest.raises(ValueError):
-            datetime.datetime(10000, 1, 1, 0, 0, 0, 0)
 
     def test_datetime_max(self):
         """

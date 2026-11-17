@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
-# Copyright ijl (2019-2024), Aarni Koskela (2021)
 
 import io
 import json
@@ -14,8 +13,7 @@ from tabulate import tabulate
 
 import orjson
 
-if hasattr(os, "sched_setaffinity"):
-    os.sched_setaffinity(os.getpid(), {0, 1})
+os.sched_setaffinity(os.getpid(), {0, 1})
 
 
 dirname = os.path.join(os.path.dirname(__file__), "..", "data")

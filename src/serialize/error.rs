@@ -1,14 +1,9 @@
-// SPDX-License-Identifier: MPL-2.0
-// Copyright ijl (2021-2026)
+// SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-use crate::ffi::PyStrRef;
+use core::ffi::CStr;
+use core::ptr::NonNull;
 
 pub(crate) enum SerializeError {
-    ArgsMissingPositional,
-    ArgsMultipleDefault,
-    ArgsMultipleOption,
-    ArgsUnexpectedKeyword,
-    ArgsInvalidOpts,
     DatetimeLibraryUnsupported,
     DefaultRecursionLimit,
     Integer53Bits,
@@ -24,92 +19,52 @@ pub(crate) enum SerializeError {
     NumpyNotCContiguous,
     NumpyNotNativeEndian,
     NumpyUnsupportedDatatype,
-    NumpyUnsupportedDatetimeUnit(PyStrRef),
-    UnsupportedType(PyStrRef),
+    UnsupportedType(NonNull<pyo3_ffi::PyObject>),
 }
 
-impl SerializeError {
-    pub const fn may_have_cause(&self) -> bool {
-        match self {
-            SerializeError::UnsupportedType(_) => true,
-            SerializeError::ArgsMissingPositional
-            | SerializeError::ArgsMultipleDefault
-            | SerializeError::ArgsMultipleOption
-            | SerializeError::ArgsUnexpectedKeyword
-            | SerializeError::ArgsInvalidOpts
-            | SerializeError::DatetimeLibraryUnsupported
-            | SerializeError::DefaultRecursionLimit
-            | SerializeError::Integer53Bits
-            | SerializeError::Integer64Bits
-            | SerializeError::InvalidStr
-            | SerializeError::InvalidFragment
-            | SerializeError::KeyMustBeStr
-            | SerializeError::RecursionLimit
-            | SerializeError::TimeHasTzinfo
-            | SerializeError::DictIntegerKey64Bit
-            | SerializeError::DictKeyInvalidType
-            | SerializeError::NumpyMalformed
-            | SerializeError::NumpyNotCContiguous
-            | SerializeError::NumpyNotNativeEndian
-            | SerializeError::NumpyUnsupportedDatatype
-            | SerializeError::NumpyUnsupportedDatetimeUnit(_) => false,
-        }
-    }
-
+impl core::fmt::Display for SerializeError {
     #[cold]
-    #[inline(never)]
-    pub fn to_pyunicode(&self) -> PyStrRef {
-        match self {
-            SerializeError::ArgsMissingPositional => {
-                PyStrRef::from_str("dumps() missing 1 required positional argument: 'obj'")
-            }
-            SerializeError::ArgsMultipleDefault => {
-                PyStrRef::from_str("dumps() got multiple values for argument: 'default'")
-            }
-            SerializeError::ArgsMultipleOption => {
-                PyStrRef::from_str("dumps() got multiple values for argument: 'option'")
-            }
-            SerializeError::ArgsUnexpectedKeyword => {
-                PyStrRef::from_str("dumps() got an unexpected keyword argument")
-            }
-            SerializeError::ArgsInvalidOpts => PyStrRef::from_str("Invalid opts"),
-            SerializeError::DatetimeLibraryUnsupported => PyStrRef::from_str(
-                "datetime's timezone library is not supported: use datetime.timezone.utc, pendulum, pytz, or dateutil",
+    #[cfg_attr(feature = "optimize", optimize(size))]
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        match *self {
+            SerializeError::DatetimeLibraryUnsupported => write!(
+                f,
+                "datetime's timezone library is not supported: use datetime.timezone.utc, pendulum, pytz, or dateutil"
             ),
             SerializeError::DefaultRecursionLimit => {
-                PyStrRef::from_str("default serializer exceeds recursion limit")
+                write!(f, "default serializer exceeds recursion limit")
             }
-            SerializeError::Integer53Bits => PyStrRef::from_str("Integer exceeds 53-bit range"),
-            SerializeError::Integer64Bits => PyStrRef::from_str("Integer exceeds 64-bit range"),
-            SerializeError::InvalidStr => {
-                PyStrRef::from_str("str is not valid UTF-8: surrogates not allowed")
-            }
+            SerializeError::Integer53Bits => write!(f, "Integer exceeds 53-bit range"),
+            SerializeError::Integer64Bits => write!(f, "Integer exceeds 64-bit range"),
+            SerializeError::InvalidStr => write!(f, "{}", crate::util::INVALID_STR),
             SerializeError::InvalidFragment => {
-                PyStrRef::from_str("orjson.Fragment's content is not of type bytes or str")
+                write!(f, "orjson.Fragment's content is not of type bytes or str")
             }
-            SerializeError::KeyMustBeStr => PyStrRef::from_str("Dict key must be str"),
-            SerializeError::RecursionLimit => PyStrRef::from_str("Recursion limit reached"),
-            SerializeError::TimeHasTzinfo => {
-                PyStrRef::from_str("datetime.time must not have tzinfo set")
-            }
+            SerializeError::KeyMustBeStr => write!(f, "Dict key must be str"),
+            SerializeError::RecursionLimit => write!(f, "Recursion limit reached"),
+            SerializeError::TimeHasTzinfo => write!(f, "datetime.time must not have tzinfo set"),
             SerializeError::DictIntegerKey64Bit => {
-                PyStrRef::from_str("Dict integer key must be within 64-bit range")
+                write!(f, "Dict integer key must be within 64-bit range")
             }
             SerializeError::DictKeyInvalidType => {
-                PyStrRef::from_str("Dict key must a type serializable with OPT_NON_STR_KEYS")
+                write!(f, "Dict key must a type serializable with OPT_NON_STR_KEYS")
             }
-            SerializeError::NumpyMalformed => PyStrRef::from_str("numpy array is malformed"),
-            SerializeError::NumpyNotCContiguous => PyStrRef::from_str(
-                "numpy array is not C contiguous; use ndarray.tolist() in default",
+            SerializeError::NumpyMalformed => write!(f, "numpy array is malformed"),
+            SerializeError::NumpyNotCContiguous => write!(
+                f,
+                "numpy array is not C contiguous; use ndarray.tolist() in default"
             ),
             SerializeError::NumpyNotNativeEndian => {
-                PyStrRef::from_str("numpy array is not native-endianness")
+                write!(f, "numpy array is not native-endianness")
             }
             SerializeError::NumpyUnsupportedDatatype => {
-                PyStrRef::from_str("unsupported datatype in numpy array")
+                write!(f, "unsupported datatype in numpy array")
             }
-            SerializeError::NumpyUnsupportedDatetimeUnit(msg) => *msg,
-            SerializeError::UnsupportedType(msg) => *msg,
+            SerializeError::UnsupportedType(ptr) => {
+                let name =
+                    unsafe { CStr::from_ptr((*ob_type!(ptr.as_ptr())).tp_name).to_string_lossy() };
+                write!(f, "Type is not JSON serializable: {name}")
+            }
         }
     }
 }

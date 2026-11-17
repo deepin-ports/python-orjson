@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
-# Copyright ijl (2019-2026), Rami Chowdhury (2020), Marc Mueller (2023), Jack Amadeo (2023)
 
 import datetime
 import sys
@@ -9,7 +8,7 @@ import pytest
 
 import orjson
 
-from .util import SUPPORTS_GETREFCOUNT, numpy
+from .util import numpy
 
 
 class Custom:
@@ -213,7 +212,7 @@ class TestType:
         dumps() default lambda
         """
         ref = Custom()
-        assert orjson.dumps(ref, default=str) == b'"%s"' % str(ref).encode(
+        assert orjson.dumps(ref, default=lambda x: str(x)) == b'"%s"' % str(ref).encode(
             "utf-8",
         )
 
@@ -263,12 +262,10 @@ class TestType:
         def default(obj):
             return obj
 
-        if SUPPORTS_GETREFCOUNT:
-            refcount = sys.getrefcount(ref)
+        refcount = sys.getrefcount(ref)
         with pytest.raises(orjson.JSONEncodeError):
             orjson.dumps(ref, default=default)
-        if SUPPORTS_GETREFCOUNT:
-            assert sys.getrefcount(ref) == refcount
+        assert sys.getrefcount(ref) == refcount
 
     def test_reference_cleanup_default_custom_pass(self):
         ref = Custom()
@@ -278,11 +275,9 @@ class TestType:
                 return str(ref)
             raise TypeError
 
-        if SUPPORTS_GETREFCOUNT:
-            refcount = sys.getrefcount(ref)
+        refcount = sys.getrefcount(ref)
         orjson.dumps(ref, default=default)
-        if SUPPORTS_GETREFCOUNT:
-            assert sys.getrefcount(ref) == refcount
+        assert sys.getrefcount(ref) == refcount
 
     def test_reference_cleanup_default_custom_error(self):
         """
@@ -293,12 +288,10 @@ class TestType:
         def default(obj):
             raise TypeError
 
-        if SUPPORTS_GETREFCOUNT:
-            refcount = sys.getrefcount(ref)
+        refcount = sys.getrefcount(ref)
         with pytest.raises(orjson.JSONEncodeError):
             orjson.dumps(ref, default=default)
-        if SUPPORTS_GETREFCOUNT:
-            assert sys.getrefcount(ref) == refcount
+        assert sys.getrefcount(ref) == refcount
 
     def test_reference_cleanup_default_subclass(self):
         ref = datetime.datetime(1970, 1, 1, 0, 0, 0)
@@ -308,37 +301,31 @@ class TestType:
                 return repr(ref)
             raise TypeError
 
-        if SUPPORTS_GETREFCOUNT:
-            refcount = sys.getrefcount(ref)
+        refcount = sys.getrefcount(ref)
         orjson.dumps(ref, option=orjson.OPT_PASSTHROUGH_DATETIME, default=default)
-        if SUPPORTS_GETREFCOUNT:
-            assert sys.getrefcount(ref) == refcount
+        assert sys.getrefcount(ref) == refcount
 
     def test_reference_cleanup_default_subclass_lambda(self):
         ref = uuid.uuid4()
 
-        if SUPPORTS_GETREFCOUNT:
-            refcount = sys.getrefcount(ref)
+        refcount = sys.getrefcount(ref)
         orjson.dumps(
             ref,
             option=orjson.OPT_PASSTHROUGH_DATETIME,
-            default=str,
+            default=lambda val: str(val),
         )
-        if SUPPORTS_GETREFCOUNT:
-            assert sys.getrefcount(ref) == refcount
+        assert sys.getrefcount(ref) == refcount
 
     @pytest.mark.skipif(numpy is None, reason="numpy is not installed")
     def test_default_numpy(self):
         ref = numpy.array([""] * 100)  # type: ignore
-        if SUPPORTS_GETREFCOUNT:
-            refcount = sys.getrefcount(ref)
+        refcount = sys.getrefcount(ref)
         orjson.dumps(
             ref,
             option=orjson.OPT_SERIALIZE_NUMPY,
             default=lambda val: val.tolist(),
         )
-        if SUPPORTS_GETREFCOUNT:
-            assert sys.getrefcount(ref) == refcount
+        assert sys.getrefcount(ref) == refcount
 
     def test_default_set(self):
         """

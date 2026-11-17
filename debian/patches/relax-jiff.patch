@@ -1,0 +1,23 @@
+From: Colin Watson <cjwatson@debian.org>
+Date: Thu, 11 Sep 2025 12:20:05 +0100
+Subject: Relax jiff version dependency
+
+Forwarded: not-needed
+Last-Update: 2025-09-11
+---
+ Cargo.toml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Cargo.toml b/Cargo.toml
+index e680d06..3aa4cec 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -47,7 +47,7 @@ encoding_rs = { version = "0.8", default-features = false }
+ half = { version = "2", default-features = false, features = ["std"] }
+ itoa = { version = "1", default-features = false }
+ itoap = { version = "1", default-features = false, features = ["std", "simd"] }
+-jiff = { version = "^0.2", default-features = false }
++jiff = { version = ">=0.1", default-features = false }
+ once_cell = { version = "1", default-features = false, features = ["alloc", "race"] }
+ pyo3-ffi = { version = "0.25", default-features = false, features = ["extension-module"] }
+ ryu = { version = "1", default-features = false }

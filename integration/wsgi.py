@@ -1,5 +1,4 @@
-# SPDX-License-Identifier: MPL-2.0
-# Copyright ijl (2018-2025)
+# SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from datetime import datetime, timezone
 from uuid import uuid4

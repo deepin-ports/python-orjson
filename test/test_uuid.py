@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
-# Copyright ijl (2020-2025), Rami Chowdhury (2020)
 
 import uuid
 

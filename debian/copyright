@@ -6,25 +6,8 @@ Upstream-Contact: ijl <ijl@mailbox.org>
 Files:
  *
 Copyright:
- 2018-2026 ijl <ijl@mailbox.org>
- 2020      Anders Kaseorg
- 2020      Baul
- 2020      Marco Ribeiro
- 2020      Rami Chowdhury
- 2020      hauntsaninja
- 2020-2021 Aviram Hassan
- 2021-2022 Aarni Koskela
- 2021      Ben Sully
- 2021-2022 Eric Jolibois
- 2022      messense
- 2022      Dominic LoBue
- 2022      Nazar Kostetskyi
- 2022      J. Nick Koston
- 2022-2023 Anders Kaseorg
- 2023      o.ermakov
- 2023      Jack Amadeo
- 2023      Marc Mueller
-License: MPL-2.0 AND Expat
+ 2018-2024 ijl <ijl@mailbox.org>
+License: Expat
 
 Files:
  include/yyjson/yyjson.c
@@ -57,7 +40,3 @@ License: Expat
  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-License: MPL-2.0
- On Debian systems the full text of the MPL-2.0 can be found in
- /usr/share/common-licenses/MPL-2.0.

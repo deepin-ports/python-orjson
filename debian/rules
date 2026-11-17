@@ -5,7 +5,6 @@
 export PYBUILD_NAME=orjson
 export CARGO_NET_OFFLINE=true
 export CARGO_HOME=$(shell pwd)/debian/cargo_home
-export CARGO_TERM_VERBOSE=true
 
 %:
 	dh $@ --buildsystem=pybuild

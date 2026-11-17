@@ -1,5 +1,4 @@
-# SPDX-License-Identifier: MPL-2.0
-# Copyright ijl (2018-2026)
+# SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 import orjson
 
@@ -8,12 +7,9 @@ from .util import needs_data, read_fixture_str
 
 @needs_data
 class TestJsonChecker:
-    def _run_roundtrip_json(self, filename, byte_exact=True):
+    def _run_roundtrip_json(self, filename):
         data = read_fixture_str(filename, "roundtrip")
-        if byte_exact:
-            assert orjson.dumps(orjson.loads(data)) == data.encode("utf-8")
-        else:
-            assert orjson.loads(orjson.dumps(orjson.loads(data))) == orjson.loads(data)
+        assert orjson.dumps(orjson.loads(data)) == data.encode("utf-8")
 
     def test_roundtrip001(self):
         """
@@ -175,4 +171,4 @@ class TestJsonChecker:
         """
         roundtrip027.json
         """
-        self._run_roundtrip_json("roundtrip27.json", byte_exact=False)
+        self._run_roundtrip_json("roundtrip27.json")

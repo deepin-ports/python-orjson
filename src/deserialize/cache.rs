@@ -1,36 +1,32 @@
-// SPDX-License-Identifier: MPL-2.0
-// Copyright ijl (2019-2026)
+// SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-use crate::ffi::{Py_DECREF, Py_INCREF, PyStrRef};
+use crate::str::PyStr;
 use associative_cache::{AssociativeCache, Capacity2048, HashDirectMapped, RoundRobinReplacement};
-use core::cell::OnceCell;
+use once_cell::unsync::OnceCell;
 
 #[repr(transparent)]
 pub(crate) struct CachedKey {
-    ptr: PyStrRef,
+    ptr: PyStr,
 }
 
 unsafe impl Send for CachedKey {}
 unsafe impl Sync for CachedKey {}
 
 impl CachedKey {
-    pub const fn new(ptr: PyStrRef) -> CachedKey {
+    pub fn new(ptr: PyStr) -> CachedKey {
         CachedKey { ptr: ptr }
     }
-    pub fn get(&mut self) -> PyStrRef {
+    pub fn get(&mut self) -> PyStr {
         let ptr = self.ptr.as_ptr();
-        unsafe {
-            Py_INCREF(ptr);
-        }
+        debug_assert!(ffi!(Py_REFCNT(ptr)) >= 1);
+        ffi!(Py_INCREF(ptr));
         self.ptr
     }
 }
 
 impl Drop for CachedKey {
     fn drop(&mut self) {
-        unsafe {
-            Py_DECREF(self.ptr.as_ptr().cast::<crate::ffi::PyObject>());
-        }
+        ffi!(Py_DECREF(self.ptr.as_ptr().cast::<pyo3_ffi::PyObject>()));
     }
 }
 

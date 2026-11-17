@@ -1,4 +1,4 @@
 # Upstream does not provide GPG signed releases
 debian-watch-does-not-check-openpgp-signature [debian/watch]
 # Expected long line
-very-long-line-length-in-source-file * [test/test_jsonchecker.py:*]
+very-long-line-length-in-source-file 997 > 512 [test/test_jsonchecker.py:12]
