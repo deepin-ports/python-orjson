@@ -5,6 +5,7 @@ Maintainer: Debian Python Team <team+python@tracker.debian.org>
 Uploaders:
  Agathe Porte <gagath@debian.org>,
 Rules-Requires-Root: no
+# Bootstrap: restore optional NumPy/Pandas/Pendulum/Faker tests after Python 3.14 rebuilds.
 Build-Depends:
  cargo,
  rustc:native (>= 1.82),
@@ -36,11 +37,7 @@ Build-Depends:
  pybuild-plugin-pyproject,
  python3-all,
  python3-dateutil <!nocheck>,
- python3-fake-factory <!nocheck>,
  python3-maturin,
- python3-numpy <!nocheck>,
- python3-pandas <!nocheck>,
- python3-pendulum <!nocheck>,
  python3-psutil <!nocheck>,
  python3-pytest <!nocheck>,
  python3-pytz <!nocheck>,
